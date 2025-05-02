@@ -109,7 +109,7 @@ En cuanto a la fórmula de Crec/Decrec relativo de población de 2024 al 2025, s
 
 \[
 \text{Crec/Decrec relativo de población 2024 al 2025} =
-\left( \frac{\text{Población 2025} - \text{Población 2017}}{\text{Población 2017}} \right) \times 100
+\left( \frac{\text{Población 2025} - \text{Población 2024}}{\text{Población 2024}} \right) \times 100
 \]
 
 
