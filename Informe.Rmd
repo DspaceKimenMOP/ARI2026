@@ -7,7 +7,6 @@ output:
     toc_depth: 2
     number_sections: false
 lang: es
-css: styles.css
 ---
 
 ```{=html}
@@ -30,9 +29,9 @@ css: styles.css
   Unidad Gestión del Conocimiento y Tecnología
 </div>
 <div class="fecha" style="text-align: center;">
-  Abril 2025
+  Mayo 2025
 </div>
-
+</div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
@@ -213,12 +212,13 @@ Poblacion_y_Pobreza <- import("Q:/A_Estadisticas/ARI/ARI2026/Datos/Poblacion_y_P
 
 # Esta es la tabla de las poblaciones, aquí ocupo las dos bases para poder ver aquellas comunas que no tengan inversión.
 
+
 tab_poblacion_nac <- Poblacion_y_Pobreza %>%
   group_by(RegionAB) %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
             "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
@@ -239,8 +239,7 @@ tab_resumen_nac %>% mutate(`Población 2024` = scales::comma(`Población 2024`, 
                            `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
                            Monto2026 = scales::comma(Monto2026, big.mark = ".", decimal.mark = ","),
                            `Pobreza Multidimensional`  = replace_na(`Pobreza Multidimensional`, "12.472")) %>%
-  kable("html", col.names = c("Región", "Población 2024", "Población 2025 (*)", "Crec/Decrec relativo de Población 2024 al 2025 (%)",
-                              "Pobreza Multidimensional (**)", "Inversión")) %>%
+  kable("html", col.names = c("Región", "Población 2024", "Población 2025 (*)", "Crec/Decrec relativo de Población 2024 al 2025 (%)", "Pobreza Multidimensional (**)", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
   footnote(general = "<span style='font-size: 12px;'>Tabla 1: Población, pobreza e inversión ARI 2026 en regiones de Chile. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los montos de inversión presentados están en miles de pesos y no incluyen la participación de las regiones en proyectos de carácter interregional.</span>", general_title = "", escape = FALSE) 
 
@@ -407,9 +406,9 @@ tab_poblacion_AyP <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_AyP <- BASE %>%
@@ -497,9 +496,9 @@ tab_poblacion_TAR <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_TAR <- BASE %>%
@@ -587,9 +586,9 @@ tab_poblacion_ANT <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_ANT <- BASE %>%
@@ -677,9 +676,9 @@ tab_poblacion_ATA <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_ATA <- BASE %>%
@@ -767,9 +766,9 @@ tab_poblacion_COQ <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_COQ <- BASE %>%
@@ -857,9 +856,9 @@ tab_poblacion_VAL <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_VAL <- BASE %>%
@@ -947,9 +946,9 @@ tab_poblacion_MET <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_MET <- BASE %>%
@@ -1037,9 +1036,9 @@ tab_poblacion_OHI <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_OHI <- BASE %>%
@@ -1127,9 +1126,9 @@ tab_poblacion_MAU <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_MAU <- BASE %>%
@@ -1217,9 +1216,9 @@ tab_poblacion_NUB <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_NUB <- BASE %>%
@@ -1307,9 +1306,9 @@ tab_poblacion_BIO <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_BIO <- BASE %>%
@@ -1397,9 +1396,9 @@ tab_poblacion_LAARAU <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_LAARAU <- BASE %>%
@@ -1487,9 +1486,9 @@ tab_poblacion_LOSRIOS <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_LOSRIOS <- BASE %>%
@@ -1577,9 +1576,9 @@ tab_poblacion_LOSLAGOS <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_LOSLAGOS <- BASE %>%
@@ -1667,9 +1666,9 @@ tab_poblacion_AYSEN <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_AYSEN <- BASE %>%
@@ -1757,9 +1756,9 @@ tab_poblacion_MAGALL <- Poblacion_y_Pobreza %>%
   summarise("Población 2024" = sum(`Población 2024`),
             "Población 2025" = sum(`Población 2025 estimada`),
             "Crec/Decrec relativo de Población 2024 al 2025" = format(
-              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              round((sum(`Población 2025 estimada`) - sum(`Población 2024`)) / sum(`Población 2024`) * 100, 2),
               big.mark = ".", decimal.mark = ",", nsmall = 2),
-            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
 
 
 tab_monto_MAGALL <- BASE %>%
