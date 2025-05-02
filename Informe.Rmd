@@ -1,0 +1,1806 @@
+---
+output: 
+  bookdown::html_document2:
+    theme: united
+    toc: true
+    toc_float: true
+    toc_depth: 2
+    number_sections: false
+lang: es
+css: styles.css
+---
+
+```{=html}
+<style>
+  .section {
+    border-top: 2px solid black;
+    margin-top: 20px;
+    padding-top: 10px;
+  }
+</style>
+```
+
+
+<div class="ARI 2026 MOP">
+  <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 100px; text-align: center;">Informe de Estadísticas ARI 2026 <br> Edición 2025 </div>
+  <div style="text-align: center;">
+  <img src="mop.jpeg" alt="" width="30%">
+</div>
+<div style="font-size: 1.5em; color: black; margin-top: 100px; text-align: center;">
+  Unidad Gestión del Conocimiento y Tecnología
+</div>
+<div class="fecha" style="text-align: center;">
+  Abril 2025
+</div>
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE)
+options(knitr.fig.caption = TRUE)
+knitr::opts_knit$set(lang = "es")
+knitr::opts_chunk$set(fig.cap = "Figura ")
+```
+
+```{r, include=FALSE}
+library(knitr) ; library(kableExtra); library(ggplot2); library(tinytex); library(dplyr); library(scales); library(readxl); library(paletteer); library(viridis); library(gridExtra); library(ggrepel); library(htmltools); library(tidyr); library(rio)
+Sys.setlocale("LC_ALL", "es_ES.UTF-8") 
+```
+
+```{r, echo=FALSE, results='hide'}
+
+# En esta sección, hice un vector de categorías para que después en las tablas y gráficos, las regiones se vean ordenadas 
+# de 1-17(esta última es interregional)
+
+#el orden_regiones es el orden de las regiones para los gráficos, mientras que orden_regiones_tab es el orden para las tablas. Todo
+#esto con el fin de que tenga el orden del mapa de chile
+
+orden_regiones <- c("INTERREGIONAL","MAGALLANES","AYSÉN","LOS LAGOS","LOS RÍOS","LA ARAUCANÍA","BIOBÍO","ÑUBLE","MAULE",
+                    "O'HIGGINS", "METROPOLITANA","VALPARAÍSO","COQUIMBO","ATACAMA","ANTOFAGASTA","TARAPACÁ","ARICA Y PARINACOTA")
+
+
+BASE <- import("Q:/A_Estadisticas/ARI/ARI2026/Datos/BASE_FINAL_ARI2026.xlsx", sheet="DATOS")
+ 
+
+#primero que todo, eliminamos aquellos proyectos que tengan monto cero
+BASE <- BASE %>% filter(`Monto 2026` > 0)
+
+
+#Añadiendo agrupacion de algunos servicios 
+#este cambio es solo para nacional
+BASE <- BASE %>%
+  mutate(SERVICIOS_A = case_when(
+    Servicio %in% c("INH", "SISS", "DP", "DGA", "DA") ~ "OTROS",
+    TRUE ~ Servicio)
+    )
+
+
+#montos ARI del año anterior
+INV_2025 <- c(224800207, 229983379, 432649438, 302199814, 304850445, 289180766, 149909425, 170697017, 190095528, 287238151, 171506759, 164097911, 157437047, 204402499, 67748746, 92299965)
+#esta parte, necesariamente arreglarla todos los años porque puede que
+#se agreguen nuevos campos, por lo que es necesario categorizarlos.  TIENE QUE TENER EL ORDEN de #orden_regiones_tab
+
+```
+
+## Introducción
+
+<div style="text-align: justify;">
+En este documento se presentan las estadísticas de los Servicios del Ministerio de Obras Públicas que se están ejecutando o tienen programado a ejecutar durante este año 2025.
+</div>
+
+<div style="text-align: justify;">
+Este análisis estadístico tiene como objetivo describir el último ARI publicado para así ver cómo se distribuye la inversión a lo largo del país y sumarlo a los instrumentos de análisis para el proceso de planificación. Este análisis se divide en dos secciones, una a nivel nacional y otra para cada región. Se presentarán tablas y gráficos en cada sección dónde se visualizan datos relevantes.
+</div>
+
+## Está dirigido
+
+<div style="text-align: justify;">
+Este documento está dirigido, en su primera etapa, al equipo de trabajo de la Dirección de Planeamiento (Dirplan), con el objetivo de proporcionar una base de conocimiento sólida sobre la inversión 2025. Para ello, se analizan diversas variables presentes en la base de datos del ARI 2026 y su relación con factores exógenos, como la pobreza multidimensional, la población registrada en el año 2024 y la proyección poblacional para el 2025. Este análisis busca ofrecer una visión integral de la inversión, permitiendo identificar tendencias y posibles impactos en el desarrollo regional y nacional. Se invita a los miembros de este equipo a revisar el contenido, formular observaciones y sugerencias, y aportar sus conocimientos y experiencias para enriquecer y fortalecer el análisis presentado, de manera que este sea una herramienta analítica que apoye la toma de decisiones estratégicas.
+</div>
+
+## Metodología
+
+<div style="text-align: justify;">
+Para obtener los resultados, estadísticas y gráficos, se utilizaron diversas fuentes de información, entre ellas la Planilla de Códigos Únicos Territoriales (CUT), las proyecciones de población para el año 2025, la población censal 2024, los datos de estimación de pobreza multidimensional 2022, y los registros del ARI 2025 y 2026. La integración de estas bases permitió realizar un análisis detallado de la distribución de población, condiciones socioeconómicas y presencia de inversiones del Ministerio de Obras Públicas (MOP) en distintas comunas del país para el año 2025.
+
+Para la construcción de la base consolidada, en una primera etapa, se unieron los datos de cada región del país. Luego se agregaron las variables de proyecciones de población 2025, la población censal 2024 y los datos de pobreza multidimensional 2022, a través del código de unidad territorial de las comunas (SUBDERE, 2018).
+
+Primero, con el fin de garantizar la consistencia y estandarización de los datos, se agrega variable que representa una abreviación para los servicios MOP. Para la construcción de los gráficos y la presentación de la información en formato HTML, se utilizó el software estadístico de código abierto Rstudio, junto a los paquetes especializados en manipulación y visualización de datos.Además, se filtra la base por aquellos proyectos que tienen monto asociado mayor que cero
+
+En cuanto a la fórmula de Crec/Decrec relativo de población de 2024 al 2025, se utiliza la siguiente expresión:
+
+\[
+\text{Crec/Decrec relativo de población 2024 al 2025} =
+\left( \frac{\text{Población 2025} - \text{Población 2017}}{\text{Población 2017}} \right) \times 100
+\]
+
+
+</div>
+
+
+<table border="1" style="border-collapse: collapse; width: 100%; text-align: left;">
+    <thead>
+        <tr>
+            <th style="padding: 8px; background-color: #f2f2f2;">Nombre Original del Servicio</th>
+            <th style="padding: 8px; background-color: #f2f2f2;">Abreviación Asignada</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td style="padding: 8px;">Dirección de Arquitectura</td><td style="padding: 8px;">DA</td></tr>
+        <tr><td style="padding: 8px;">Dirección de Obras Hidráulicas</td><td style="padding: 8px;">DOH</td></tr>
+        <tr><td style="padding: 8px;">Dirección de Vialidad</td><td style="padding: 8px;">DV</td></tr>
+        <tr><td style="padding: 8px;">Dirección de Obras Portuarias</td><td style="padding: 8px;">DOP</td></tr>
+        <tr><td style="padding: 8px;">Dirección de Aeropuertos</td><td style="padding: 8px;">DAP</td></tr>
+        <tr><td style="padding: 8px;">Dirección de Planeamiento</td><td style="padding: 8px;">DP</td></tr>
+        <tr><td style="padding: 8px;">Subdirección de Servicios Sanitarios Rurales</td><td style="padding: 8px;">SSR</td></tr>
+        <tr><td style="padding: 8px;">Conservaciones por Administración Directa - Dirección de Vialidad</td><td style="padding: 8px;">DV</td></tr>
+        <tr><td style="padding: 8px;">Conservaciones por Administración Directa - Dirección de Aeropuertos</td><td style="padding: 8px;">DAP</td></tr>
+        <tr><td style="padding: 8px;">Dirección General de Concesiones de Obras Públicas</td><td style="padding: 8px;">DGC</td></tr>
+        <tr><td style="padding: 8px;">Dirección General de Aguas</td><td style="padding: 8px;">DGA</td></tr>
+        <tr><td style="padding: 8px;">Gestión Hídrica y Organizaciones-DGA</td><td style="padding: 8px;">DGA</td></tr>
+        <tr><td style="padding: 8px;">Instituto Nacional de Hidráulica</td><td style="padding: 8px;">INH</td></tr>
+        <tr><td style="padding: 8px;">Superintendencia de Servicios Sanitarios</td><td style="padding: 8px;">SISS</td></tr>
+    </tbody>
+    <caption style="font-size: 12px; margin-top: 10px; color: #333; caption-side: bottom;">
+        Tabla 0: Asignación abreviaciones de los Servicios MOP
+    </caption>
+</table>
+
+
+## Nacional
+
+```{r}
+
+orden_regiones_tab <- rev(orden_regiones)
+
+
+tab1 <- BASE %>% group_by(RegionAB) %>% summarise("Monto 2026" = sum(`Monto 2026`)) %>% 
+  mutate(RegionAB = factor(RegionAB, levels = orden_regiones))  %>% 
+  arrange(RegionAB) 
+
+
+tab1 <- tab1 %>%
+  mutate(IncDec = round(`Monto 2026`/INV_2025, 2),
+         Flecha = case_when(IncDec > 1 ~ "↑",
+                            IncDec < 1 ~ "↓",
+                            TRUE ~ "="),
+         Label = paste0(scales::comma(`Monto 2026`, big.mark = ".", decimal.mark = ","),
+                        "   ",
+                        "<span style='color:red;'>",
+                        Flecha, "</span>",
+                        "   (", scales::comma(IncDec, big.mark = ".", decimal.mark = ","), ")")
+         )
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a la Figura 1, Algunas regiones, como Los Lagos, reciben una inversión significativamente mayor en comparación con otras. Esto puede deberse a la necesidad de desarrollar infraestructura crítica, proyectos de gran envergadura o áreas con mayor densidad poblacional que requieren más recursos. Por otra parte, otras regiones, como Tarapacá, reciben menos inversión, lo que podría indicar que ya cuentan con infraestructura adecuada, tienen menor población o no están priorizadas en los planes de desarrollo actuales.
+</div>
+
+```{r, fig.cap=NULL}
+
+ggplot(tab1, aes(y = RegionAB, x = `Monto 2026`)) +
+  geom_bar(stat = "identity", fill = "darkblue", width = 0.6) +
+  theme_minimal() +
+  ggtext::geom_richtext(aes(label = Label), hjust = -0.1, size = 3, fill = NA, label.color = NA) + 
+  scale_x_continuous(labels = label_number(scale = 1e-6, suffix = "M"), limits = c(0, 600000000)) +
+  labs(title = "Inversión ARI 2026 en miles de pesos por Regiones",
+       x = "", y = "",
+       caption =  "Figura 1: Inversión ARI 2026 en miles de pesos por Regiones.\nFuente: Elaboración propia basada en datos del Departamento de Gestión Presupuestaria.\nNota: Sentido de la flecha (arriba/abajo) indica crecimiento o decrecimiento en comparación al presupuesto del ARI 2025 \ny entre paréntesis se indica el factor de crecimiento o decrecimiento.") +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-150), color = "#555555"),
+        axis.text.x = element_text(vjust = -0.3),
+        axis.text.y = element_text(size = 10, margin = margin(r = 20)),
+        axis.title.x = element_text(size = 10, margin = margin(t = 10)),
+        axis.title.y = element_text(size = 10, margin = margin(r = 20)),
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.5, margin = margin(b = 20)))
+
+```
+
+<div style="text-align: justify;">
+La Región Metropolitana lidera en inversión, pobreza multidimensional y población. Esto sugiere una relación directa entre la cantidad de inversión y la necesidad de abordar la pobreza en áreas con alta densidad poblacional. La alta inversión puede estar destinada a mejorar la infraestructura y los servicios para una gran población, así como a reducir la pobreza multidimensional mediante proyectos específicos.
+
+Los Lagos recibe una inversión significativa de 433,052,650 pesos, lo que refleja la importancia de la infraestructura en esta región.
+
+Tarapacá Tiene una disminución significativa en la población y recibe menos inversión, lo que puede indicar una menor prioridad en los planes de desarrollo.
+
+Estas observaciones muestran cómo la inversión se distribuye en función de las necesidades específicas de cada región, considerando factores como la población y la pobreza multidimensional.
+</div>
+
+```{r, tab.cap=NULL}
+
+Poblacion_y_Pobreza <- import("Q:/A_Estadisticas/ARI/ARI2026/Datos/Poblacion_y_Pobreza.xlsx", sheet="POBL_Y_POBR")
+
+# Esta es la tabla de las poblaciones, aquí ocupo las dos bases para poder ver aquellas comunas que no tengan inversión.
+
+tab_poblacion_nac <- Poblacion_y_Pobreza %>%
+  group_by(RegionAB) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(sum(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_nac <- BASE %>%
+  select(RegionAB, `Monto 2026`) %>%
+  group_by(RegionAB) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_nac <- left_join(tab_poblacion_nac, tab_monto_nac, by = "RegionAB")  %>%
+  mutate(RegionAB = factor(RegionAB, levels = rev(orden_regiones))) %>%
+  arrange(RegionAB) %>%
+  filter(RegionAB != "INTERREGIONAL")
+
+
+tab_resumen_nac %>% mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+                           `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+                           Monto2026 = scales::comma(Monto2026, big.mark = ".", decimal.mark = ","),
+                           `Pobreza Multidimensional`  = replace_na(`Pobreza Multidimensional`, "12.472")) %>%
+  kable("html", col.names = c("Región", "Población 2024", "Población 2025 (*)", "Crec/Decrec relativo de Población 2024 al 2025 (%)",
+                              "Pobreza Multidimensional (**)", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 1: Población, pobreza e inversión ARI 2026 en regiones de Chile. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los montos de inversión presentados están en miles de pesos y no incluyen la participación de las regiones en proyectos de carácter interregional.</span>", general_title = "", escape = FALSE) 
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a la Figura 2, hay mayor cantidad de proyectos de arrastre que nuevos. Destaca la región de Los Lagos por su gran cantidad de proyectos de arrastre. Por otra parte, la Región Metropolitana lidera en términos de proyectos nuevos, con una inversión significativa destinada a la mejora de infraestructura urbana, transporte y servicios públicos. Esto refleja la necesidad de abordar las demandas de una población creciente y mejorar la calidad de vida en la capital del país.
+</div>
+
+```{r, fig.cap= NULL}
+
+tabREG_CAT <- BASE %>%
+  group_by(RegionAB, Categoría) %>%
+  summarise(TotalCat = sum(`Monto 2026`), .groups = "keep") %>%
+  mutate(RegionAB = factor(RegionAB, levels = orden_regiones)) %>%
+  arrange(RegionAB, Categoría)
+
+
+nuevos_nac <- tabREG_CAT %>% filter(Categoría == "Nuevo")
+arrastre_nac <- tabREG_CAT %>% filter(Categoría == "Arrastre")
+
+
+ggplot(tabREG_CAT, aes(x = RegionAB, y = TotalCat, fill = Categoría)) +
+  facet_wrap(~Categoría, scales = "free_y", nrow = 1, , labeller = as_labeller(c("Arrastre" = "Proyectos de Arrastre", "Nuevo" = "Proyectos Nuevos"))) + 
+  geom_bar(stat = "identity", position = "stack", width = 0.6) + 
+  geom_text(aes(label = scales::comma(TotalCat, big.mark = ".", decimal.mark = ",")), hjust = -0.1, color = "black", size = 3) +
+  scale_y_continuous(labels = label_number(scale = 1e-6, suffix = "M"), limits = function(x) 
+    {if ("Arrastre" %in% tabREG_CAT$Categoría) {c(0, 599565751)  } else {
+        NULL}
+    }
+    ) + 
+  labs(
+    caption = "Figura 2 : Inversión desglosada por proyectos nuevos y de arrastre. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria \nNota: Inversión en miles de pesos",
+    title = "Inversión ARI 2026 por Región y Categoría del Proyecto (Arrastre y Nuevo)",
+    x = "", y = "") +
+  scale_fill_manual(values = alpha(c("cornsilk4", "darkblue"), .7)) +
+  theme_minimal() +  
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.spacing = unit(0.8, "lines"), 
+        panel.border = element_rect(color = "black", fill = NA, size = 0.0005),
+        axis.text.x = element_text(angle = 45, hjust = 1),
+        axis.ticks.y = element_blank(),
+        legend.title = element_blank(),  
+        legend.position = "none",
+        strip.background = element_rect(color = "black", linewidth = 1),
+        strip.text = element_text(size = 10),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-85), color = "#555555"),
+        plot.title = element_text(size = 10, face = "bold", hjust = 0.5, margin = margin(b = 20))) +
+  coord_flip()
+
+```
+
+<div style="text-align: justify;">
+Según la Figura 3, la Dirección de Vialidad recibe una parte considerable de la inversión. Esto sugiere un enfoque en mejorar y mantener la infraestructura vial, lo cual es crucial para el desarrollo económico y la conectividad. Por otro lado, Dirección de Planeamiento, Dirección General de Aguas y Dirección de Arquitectura suelen recibir menos inversión en comparación con la Dirección de Vialidad. Esto podría indicar una menor prioridad en proyectos de planificación, gestión de aguas y arquitectura, o que estos proyectos requieren menos recursos financieros.
+</div>
+
+```{r, fig.cap=NULL}
+
+colores_servicios <- c("DV" = "#000957", "DGC" = "#155E95", "SSR" = "#4C585B","DOH" = "#7E99A3", "DAP" = "#344CB7", "DOP" = "#98D8EF", "DA" = "#C4D9FF", "DGA" ="#1A3A6E", "DP" = "#537895","ING" = "#A1BBCF", "OTROS" ="#D9ECFF", "SISS" ="#7B8FA6")
+
+
+SERVICIOS_NAC <- BASE %>% 
+  group_by(SERVICIOS_A) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100,1))
+
+
+ggplot(SERVICIOS_NAC , aes(x = reorder(SERVICIOS_A, -Monto2026), y = Monto2026, fill = SERVICIOS_A)) + 
+  geom_bar(stat = "identity", width = 0.6) + 
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","),
+                               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")), 
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Distribución de Inversión ARI 2026 por servicios MOP a nivel nacional",
+       x = "", y = "",
+       caption = "Figura 3: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP. Fuente: Elaboración propia a partir \nde los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' comprende los servicios DA, DGA, DP, SISS e INH.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_NAC$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA), 
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none", 
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.5, margin = margin(b = 20)),
+        plot.caption = element_text(size = 9, hjust = -0.2, margin = margin(t = 20, l =-40), color = "#555555"))
+
+
+otros_data <- BASE %>%
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto / sum(Monto) * 100,4)) %>% 
+  filter(Servicio %in% c("INH", "SISS", "DP", "DGA", "DA")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 3), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 2: Servicios agrupados en 'Otros', los cuáles incluyen DA, DGA, DP, SISS e INH. Fuente: tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>",
+           general_title = "", escape = FALSE)
+
+```
+
+
+# Arica y Parinacota
+
+<div style="text-align: justify;">
+De acuerdo a la Figura 4, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_AYP <- BASE %>%
+  filter(RegionAB == "ARICA Y PARINACOTA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_AYP, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Arica y Parinacota",
+       x = "", y = "",
+       caption = "Figura 4: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Arica y Parinacota. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_AYP$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_AYP <- BASE %>%
+  filter(RegionAB == "ARICA Y PARINACOTA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_AYP, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 3: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Arica y Parinacota. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+Según la tabla 4, La región de Arica y Parinacota muestra un crecimiento poblacional moderado en todas sus comunas, con Arica liderando en términos de población y crecimiento relativo. Arica recibe la mayor inversión, seguida por Putre, lo que refleja su importancia regional y las necesidades de infraestructura. Camarones y General Lagos reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Arica y Putre tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_AyP <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "ARICA Y PARINACOTA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_AyP <- BASE %>%
+  filter(RegionAB == "ARICA Y PARINACOTA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_AyP <- left_join(tab_poblacion_AyP, tab_monto_AyP, by = "Comunas") 
+
+
+tab_resumen_AyP %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 4: Poblaciones en la región de Arica y Parinacota. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Tarapacá
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_TAR <- BASE %>%
+  filter(RegionAB == "TARAPACÁ") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_TAR, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Tarapacá",
+       x = "", y = "",
+       caption = "Figura 5: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Tarapacá. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_TAR$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_TAR <- BASE %>%
+  filter(RegionAB == "TARAPACÁ") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_TAR, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 5: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Tarapacá. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+Según la Tabla 6, La región de Tarapacá muestra un crecimiento poblacional moderado en todas sus comunas, con Iquique liderando en términos de población y crecimiento relativo. Iquique recibe la mayor inversión, seguida por Alto Hospicio, lo que refleja su importancia regional y las necesidades de infraestructura. Pozo Almonte y Pica reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas.Iquique y Alto Hospicio tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_TAR <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "TARAPACÁ") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_TAR <- BASE %>%
+  filter(RegionAB == "TARAPACÁ") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_TAR <- left_join(tab_poblacion_TAR, tab_monto_TAR, by = "Comunas") 
+
+
+tab_resumen_TAR %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 6: Poblaciones en la región de TARAPACÁ. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Antofagasta
+
+<div style="text-align: justify;">
+En esta región, de acuerdo a la Figura 6, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_ANT <- BASE %>%
+  filter(RegionAB == "ANTOFAGASTA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_ANT, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Antofagasta",
+       x = "", y = "",
+       caption = "Figura 6: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Antofagasta. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_ANT$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_ANT <- BASE %>%
+  filter(RegionAB == "ANTOFAGASTA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_ANT, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 7: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Antofagasta. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de Antofagasta muestra un crecimiento poblacional moderado en todas sus comunas, con Antofagasta liderando en términos de población y crecimiento relativo. Antofagasta recibe la mayor inversión, seguida por Calama, lo que refleja su importancia regional y las necesidades de infraestructura. Tocopilla y Mejillones reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Antofagasta y Calama tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_ANT <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "ANTOFAGASTA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_ANT <- BASE %>%
+  filter(RegionAB == "ANTOFAGASTA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_ANT <- left_join(tab_poblacion_ANT, tab_monto_ANT, by = "Comunas") 
+
+
+tab_resumen_ANT %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 8: Poblaciones en la región de Antofagasta. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Atacama
+
+<div style="text-align: justify;">
+Se aprecia en la Figura 7que La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_ATA <- BASE %>%
+  filter(RegionAB == "ATACAMA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_ATA, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Atacama",
+       x = "", y = "",
+       caption = "Figura 7: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Atacama. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_ATA$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_ATA <- BASE %>%
+  filter(RegionAB == "ATACAMA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_ATA, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 9: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Atacama. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a la Tabla 10, La región de Atacama muestra un crecimiento poblacional moderado en todas sus comunas, con Copiapó liderando en términos de población y crecimiento relativo. Copiapó recibe la mayor inversión, seguida por Vallenar, lo que refleja su importancia regional y las necesidades de infraestructura. Caldera y Chañaral reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Copiapó y Vallenar tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_ATA <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "ATACAMA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_ATA <- BASE %>%
+  filter(RegionAB == "ATACAMA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_ATA <- left_join(tab_poblacion_ATA, tab_monto_ATA, by = "Comunas") 
+
+
+tab_resumen_ATA %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 10: Poblaciones en la región de Atacama. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Coquimbo
+
+<div style="text-align: justify;">
+De acuerdo a la Figura 8, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_COQ <- BASE %>%
+  filter(RegionAB == "COQUIMBO") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_COQ, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Coquimbo",
+       x = "", y = "",
+       caption = "Figura 8: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Coquimbo. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_COQ$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_COQ <- BASE %>%
+  filter(RegionAB == "COQUIMBO") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_COQ, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 11: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de COQUIMBO. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a la Tabla 12, La región de Coquimbo muestra un crecimiento poblacional moderado en todas sus comunas, con La Serena liderando en términos de población y crecimiento relativo. La Serena recibe la mayor inversión, seguida por Coquimbo, lo que refleja su importancia regional y las necesidades de infraestructura. Ovalle e Illapel reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. La Serena y Coquimbo tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_COQ <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "COQUIMBO") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_COQ <- BASE %>%
+  filter(RegionAB == "COQUIMBO") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_COQ <- left_join(tab_poblacion_COQ, tab_monto_COQ, by = "Comunas") 
+
+
+tab_resumen_COQ %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 12: Poblaciones en la región de COQUIMBO. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Valparaíso
+
+<div style="text-align: justify;">
+Según la Figura 9, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_VAL <- BASE %>%
+  filter(RegionAB == "VALPARAÍSO") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_VAL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Valparaíso",
+       x = "", y = "",
+       caption = "Figura 9: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Valparaíso. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_VAL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_VAL <- BASE %>%
+  filter(RegionAB == "VALPARAÍSO") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_VAL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 13: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Valparaíso. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+En la tabla 14 se aprecia que La región de Valparaíso muestra un crecimiento poblacional moderado en todas sus comunas, con Valparaíso liderando en términos de población y crecimiento relativo. Valparaíso recibe la mayor inversión, seguida por Viña del Mar, lo que refleja su importancia regional y las necesidades de infraestructura. Quillota y San Antonio reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Valparaíso y Viña del Mar tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_VAL <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "VALPARAÍSO") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_VAL <- BASE %>%
+  filter(RegionAB == "VALPARAÍSO") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_VAL <- left_join(tab_poblacion_VAL, tab_monto_VAL, by = "Comunas") 
+
+
+tab_resumen_VAL %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 14: Poblaciones en la región de Valparaíso. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Metropolitana de Santiago
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección General de Concesiones y a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte y de tener infraestructuras para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_MET <- BASE %>%
+  filter(RegionAB == "METROPOLITANA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_MET, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Metropolitana",
+       x = "", y = "",
+       caption = "Figura 10: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Metropolitana. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_MET$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_MET <- BASE %>%
+  filter(RegionAB == "METROPOLITANA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_MET, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 15: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región Metropolitana. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a la Tabla 16, La Región Metropolitana muestra un crecimiento poblacional moderado en todas sus comunas, con Santiago liderando en términos de población y crecimiento relativo. Santiago recibe la mayor inversión, seguida por Puente Alto, lo que refleja su importancia regional y las necesidades de infraestructura. Maipú y La Florida reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Santiago y Puente Alto tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_MET <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "METROPOLITANA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_MET <- BASE %>%
+  filter(RegionAB == "METROPOLITANA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_MET <- left_join(tab_poblacion_MET, tab_monto_MET, by = "Comunas") 
+
+
+tab_resumen_MET %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 16: Poblaciones en la región de Metropolitana. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Libertador General Bernardo O'Higgins
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_OHI <- BASE %>%
+  filter(RegionAB == "O'HIGGINS") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_OHI, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de O'HIGGINS",
+       x = "", y = "",
+       caption = "Figura 11: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de O'Higgins. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_OHI$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_OHI <- BASE %>%
+  filter(RegionAB == "O'HIGGINS") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_OHI, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 17: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de O'Higgins. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de O'Higgins muestra un crecimiento poblacional moderado en todas sus comunas, con Rancagua liderando en términos de población y crecimiento relativo. Rancagua recibe la mayor inversión, seguida por San Fernando, lo que refleja su importancia regional y las necesidades de infraestructura. Pichilemu y Santa Cruz reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Rancagua y San Fernando tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_OHI <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "O'HIGGINS") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_OHI <- BASE %>%
+  filter(RegionAB == "O'HIGGINS") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_OHI <- left_join(tab_poblacion_OHI, tab_monto_OHI, by = "Comunas") 
+
+
+tab_resumen_OHI %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 18: Poblaciones en la región de O'Higgins. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Maule
+
+<div style="text-align: justify;">
+Según la Figura 12 y Tabla 19, la mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja. La inversión en infraestructura vial es crucial para la conectividad y el desarrollo económico. La gestión de recursos hídricos también es importante, especialmente en regiones con desafíos relacionados con el agua.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_MAU <- BASE %>%
+  filter(RegionAB == "MAULE") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_MAU, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Maule",
+       x = "", y = "",
+       caption = "Figura 12: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Maule. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_MAU$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_MAU <- BASE %>%
+  filter(RegionAB == "MAULE") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_MAU, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 19: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de MAULE. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+De acuerdo a las Tabla 20, Talca recibe la mayor inversión, seguida por Curicó, lo que refleja su importancia regional y las necesidades de infraestructura. Linares y Cauquenes reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. La región del Maule muestra un crecimiento poblacional moderado en todas sus comunas, con Talca y Curicó liderando en términos de población y crecimiento relativo. Además estas dos comunas mencionadas, tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_MAU <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "MAULE") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_MAU <- BASE %>%
+  filter(RegionAB == "MAULE") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_MAU <- left_join(tab_poblacion_MAU, tab_monto_MAU, by = "Comunas") 
+
+
+tab_resumen_MAU %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 20: Poblaciones en la región de MAULE. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Ñuble
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Obras Civiles, lo que refleja la importancia de mejorar la infraestructura civil para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y la Dirección General de Aguas sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_NUB<- BASE %>%
+  filter(RegionAB == "ÑUBLE") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_NUB, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Ñuble",
+       x = "", y = "",
+       caption = "Figura 13: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Ñuble. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_NUB$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_NUB <- BASE %>%
+  filter(RegionAB == "ÑUBLE") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_NUB, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 21: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Ñuble. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+Según la Tabla 22, la región de Ñuble muestra un crecimiento poblacional moderado en todas sus comunas, con Chillán liderando en términos de población y crecimiento relativo. Chillán recibe la mayor inversión, seguida por San Carlos, lo que refleja su importancia regional y las necesidades de infraestructura. Bulnes y Quirihue reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas.Chillán y San Carlos tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_NUB <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "ÑUBLE") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_NUB <- BASE %>%
+  filter(RegionAB == "ÑUBLE") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_NUB <- left_join(tab_poblacion_NUB, tab_monto_NUB, by = "Comunas") 
+
+
+tab_resumen_NUB %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 22: Poblaciones en la región de Ñuble. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Biobío
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_BIO<- BASE %>%
+  filter(RegionAB == "BIOBÍO") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_BIO, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Biobío",
+       x = "", y = "",
+       caption = "Figura 14: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Biobío. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_BIO$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_BIO <- BASE %>%
+  filter(RegionAB == "BIOBÍO") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_BIO, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 23: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Biobío. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región del Biobío muestra un crecimiento poblacional moderado en todas sus comunas, con Concepción liderando en términos de población y crecimiento relativo. Concepción recibe la mayor inversión, seguida por Talcahuano, lo que refleja su importancia regional y las necesidades de infraestructura. Los Ángeles y Chillán reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas.Concepción y Talcahuano tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_BIO <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "BIOBÍO") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_BIO <- BASE %>%
+  filter(RegionAB == "BIOBÍO") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_BIO <- left_join(tab_poblacion_BIO, tab_monto_BIO, by = "Comunas") 
+
+
+tab_resumen_BIO %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 24: Poblaciones en la región de BIOBÍO. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# La Araucanía
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_LAARAU<- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_LAARAU, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de La Araucanía",
+       x = "", y = "",
+       caption = "Figura 15: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de La Araucanía. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_LAARAU$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_LAARAU <- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_LAARAU, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 25: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de La Araucanía. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de La Araucanía muestra un crecimiento poblacional moderado en todas sus comunas, con Temuco liderando en términos de población y crecimiento relativo. Temuco recibe la mayor inversión, seguida por Padre Las Casas, lo que refleja su importancia regional y las necesidades de infraestructura. Angol y Villarrica reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Temuco y Padre Las Casas tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_LAARAU <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_LAARAU <- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_LAARAU <- left_join(tab_poblacion_LAARAU, tab_monto_LAARAU, by = "Comunas") 
+
+
+tab_resumen_LAARAU %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 26: Poblaciones en la región de La Araucanía. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Los Ríos
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_LOSRIOS<- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_LOSRIOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Ríos",
+       x = "", y = "",
+       caption = "Figura 16: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Ríos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_LOSRIOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_LOSRIOS <- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_LOSRIOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 27: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Ríos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de Los Ríos muestra un crecimiento poblacional moderado en todas sus comunas, con Valdivia liderando en términos de población y crecimiento relativo.Valdivia recibe la mayor inversión, seguida por La Unión, lo que refleja su importancia regional y las necesidades de infraestructura. Panguipulli y Río Bueno reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas.Valdivia y La Unión tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_LOSRIOS <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_LOSRIOS <- BASE %>%
+  filter(RegionAB == "LA ARAUCANÍA") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_LOSRIOS <- left_join(tab_poblacion_LOSRIOS, tab_monto_LOSRIOS, by = "Comunas") 
+
+
+tab_resumen_LOSRIOS %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 28: Poblaciones en la región de Los Ríos. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Los Lagos
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_LOSLAGOS<- BASE %>%
+  filter(RegionAB == "LOS LAGOS") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_LOSLAGOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Lagos",
+       x = "", y = "",
+       caption = "Figura 17: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Lagos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_LOSLAGOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_LOSLAGOS <- BASE %>%
+  filter(RegionAB == "LOS LAGOS") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_LOSLAGOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 29: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Lagos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de Los Lagos muestra un crecimiento poblacional moderado en todas sus comunas, con Puerto Montt liderando en términos de población y crecimiento relativo. Puerto Montt recibe la mayor inversión, seguida por Osorno, lo que refleja su importancia regional y las necesidades de infraestructura. Ancud y Castro reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Puerto Montt y Osorno tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_LOSLAGOS <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "LOS LAGOS") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_LOSLAGOS <- BASE %>%
+  filter(RegionAB == "LOS LAGOS") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_LOSLAGOS <- left_join(tab_poblacion_LOSLAGOS, tab_monto_LOSLAGOS, by = "Comunas") 
+
+
+tab_resumen_LOSLAGOS %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 30: Poblaciones en la región de LOS LAGOS. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Aysén del General Carlos Ibáñez del Campo
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_AYSEN<- BASE %>%
+  filter(RegionAB == "AYSÉN") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_AYSEN, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Aysén",
+       x = "", y = "",
+       caption = "Figura 18: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Aysén. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_AYSEN$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_AYSEN <- BASE %>%
+  filter(RegionAB == "AYSÉN") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_AYSEN, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 31: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Aysén. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de Aysén muestra un crecimiento poblacional moderado en todas sus comunas, con Coyhaique liderando en términos de población y crecimiento relativo. Coyhaique recibe la mayor inversión, seguida por Puerto Aysén, lo que refleja su importancia regional y las necesidades de infraestructura. Chile Chico y Cochrane reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Coyhaique y Puerto Aysén tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_AYSEN <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "AYSÉN") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_AYSEN <- BASE %>%
+  filter(RegionAB == "AYSÉN") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_AYSÉN <- left_join(tab_poblacion_AYSEN, tab_monto_AYSEN, by = "Comunas") 
+
+
+tab_resumen_AYSÉN %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 32: Poblaciones en la región de Aysén. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Magallanes y de la Antártica Chilena
+
+<div style="text-align: justify;">
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+</div>
+
+```{r, fig.cap=NULL}
+
+SERVICIOS_MAGALL<- BASE %>%
+  filter(RegionAB == "MAGALLANES") %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  group_by(ServicioAgrupado) %>%
+  summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
+
+
+ggplot(SERVICIOS_MAGALL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto2026, fill = ServicioAgrupado)) +
+  geom_bar(stat = "identity", width = 0.6) +
+  geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","), 
+               "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")),
+            vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
+  labs(title = "Inversión ARI 2026 por servicios MOP en Región de Magallanes",
+       x = "", y = "",
+       caption = "Figura 19: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Magallanes. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+  scale_fill_manual(values = colores_servicios) +
+  scale_y_continuous(limits = c(0, max(SERVICIOS_MAGALL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
+  theme_minimal() +
+  theme(panel.background = element_rect(fill = "white", color = NA),
+        panel.border = element_rect(color = "black", fill = NA, size = 0.5),
+        legend.position = "none",
+        plot.title = element_text(size = 12, face = "bold", hjust = 0.8, margin = margin(b = 20)),
+        plot.caption = element_text(hjust = 0, size = 9, margin = margin(t = 10, r = 100, b = 5, l=-30), color = "#555555"))
+
+
+otros_data_MAGALL <- BASE %>%
+  filter(RegionAB == "MAGALLANES") %>% 
+  group_by(Servicio) %>%
+  summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
+  mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
+  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
+         Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
+
+
+kable(otros_data_MAGALL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de MAGALLANES. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+           general_title = "", escape = FALSE)
+
+```
+
+<div style="text-align: justify;">
+La región de Magallanes muestra un crecimiento poblacional moderado en todas sus comunas, con Punta Arenas liderando en términos de población y crecimiento relativo. Punta Arenas recibe la mayor inversión, seguida por Puerto Natales, lo que refleja su importancia regional y las necesidades de infraestructura. Porvenir y Cabo de Hornos reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Punta Arenas y Puerto Natales tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+</div>
+
+```{r, fig.cap = NULL}
+
+tab_poblacion_MAGALL <- Poblacion_y_Pobreza %>%
+  filter(RegionAB == "MAGALLANES") %>% 
+  select(Comunas, `Población 2024`, `Población 2025 estimada`, `Pobreza 2022 estimada`) %>%
+  group_by(Comunas) %>%
+  summarise("Población 2024" = sum(`Población 2024`),
+            "Población 2025" = sum(`Población 2025 estimada`),
+            "Crec/Decrec relativo de Población 2024 al 2025" = format(
+              round((first(`Población 2025 estimada`) - first(`Población 2024`)) / first(`Población 2024`) * 100, 2),
+              big.mark = ".", decimal.mark = ",", nsmall = 2),
+            "Pobreza Multidimensional" = scales::comma(round(first(`Pobreza 2022 estimada`)), big.mark = "."))
+
+
+tab_monto_MAGALL <- BASE %>%
+  filter(RegionAB == "MAGALLANES") %>% 
+  select(Comunas, `Monto 2026`) %>%
+  group_by(Comunas) %>%
+  summarise("Monto2026" = sum(`Monto 2026`))
+
+
+tab_resumen_MAGALLANES <- left_join(tab_poblacion_MAGALL, tab_monto_MAGALL, by = "Comunas") 
+
+
+tab_resumen_MAGALLANES %>%
+  mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
+         `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
+         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+  kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
+  kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
+  footnote(general = "<span style='font-size: 12px;'>Tabla 34: Poblaciones en la región de Magallanes. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+         general_title = "", escape = FALSE)
+
+```
+
+# Conclusión
+
+<div style="text-align: justify;">
+El análisis de las estadísticas de inversión, crecimiento poblacional y pobreza multidimensional en las distintas regiones de Chile para los años 2024 y 2025 revela importantes diferencias en las prioridades de desarrollo y necesidades de infraestructura. La Región Metropolitana lidera en inversión y población, lo que sugiere una relación directa entre la inversión y la atención a la pobreza en áreas densamente pobladas. Los Lagos recibe una inversión significativa, reflejando la importancia de la infraestructura en la región, mientras que Tarapacá muestra una disminución poblacional y recibe menos inversión, indicando una menor prioridad en los planes de desarrollo.
+
+La distribución de la inversión se realiza considerando las necesidades específicas de cada región, tomando en cuenta factores como la población y la pobreza multidimensional. Los proyectos de arrastre predominan sobre los nuevos proyectos, con Los Lagos destacándose en el número de proyectos de arrastre. La Región Metropolitana lidera en nuevos proyectos, enfocándose en infraestructura urbana, transporte y servicios públicos para satisfacer las demandas de una población en crecimiento.
+
+En resumen, el informe destaca la importancia de una distribución estratégica de la inversión para abordar las necesidades de desarrollo regional y nacional, con un enfoque particular en las áreas con mayor población y pobreza. Este análisis proporciona una base sólida para la toma de decisiones estratégicas en el Ministerio de Obras Públicas, asegurando que los recursos se asignen de manera eficiente y efectiva para promover el desarrollo sostenible y mejorar la calidad de vida de los ciudadanos.
+</div>
+
+# Bibliografía
+
+<div style="text-align: justify;">
+"Anteproyecto Regional de Inversiones - ARI MOP 2026". Departamento de Gestión Presupuestaria. Dirección de Planeamiento. Ministerio de Obras Públicas. Abril, 2025.
+
+"Estimaciones de Índice de Pobreza Multidimensional por comuna. Aplicación de Metodologías de Estimación para Áreas Pequeñas". CASEN 2022. MIDESO.
+
+"Estimaciones y proyecciones 2002-2035 por comunas". INE.
+
+"Población censada por sexo y razón hombre-mujer, según grupos de edad quinquenal y comuna". CENSO 2024. INE. 27 de marzo, 2025.
+</div>
