@@ -83,17 +83,17 @@ INV_2025 <- c(224800207, 229983379, 432649438, 302199814, 304850445, 289180766, 
 ## Introducción
 
 <div style="text-align: justify;">
-En este documento se presentan las estadísticas de los Servicios del Ministerio de Obras Públicas que se están ejecutando o tienen programado a ejecutar durante este año 2025.
-</div>
+El presente documento constituye un análisis estadístico pormenorizado sobre los Servicios del Ministerio de Obras Públicas (MOP) para su ejecución durante el año 2025. El propósito central es realizar una caracterización detallada y una distribución territorial precisa de la inversión pública, empleando como fuente principal el último Anteproyecto Regional de Inversiones (ARI). Este análisis se propone como un instrumento esencial para robustecer el proceso de planificación estratégica del Ministerio.
 
-<div style="text-align: justify;">
-Este análisis estadístico tiene como objetivo describir el último ARI publicado para así ver cómo se distribuye la inversión a lo largo del país y sumarlo a los instrumentos de análisis para el proceso de planificación. Este análisis se divide en dos secciones, una a nivel nacional y otra para cada región. Se presentarán tablas y gráficos en cada sección dónde se visualizan datos relevantes.
+El informe se organiza en dos secciones metodológicamente diferenciadas: una sección con análisis agregado a nivel nacional y otra con análisis detallados para cada región del país. Ambas secciones integran tablas estadísticas y gráficos analíticos diseñados para facilitar la visualización e interpretación de las variables estudiadas, permitiendo así un examen exhaustivo de la distribución espacial y sectorial de la inversión.
 </div>
 
 ## Está dirigido
 
 <div style="text-align: justify;">
-Este documento está dirigido, en su primera etapa, al equipo de trabajo de la Dirección de Planeamiento (Dirplan), con el objetivo de proporcionar una base de conocimiento sólida sobre la inversión 2025. Para ello, se analizan diversas variables presentes en la base de datos del ARI 2026 y su relación con factores exógenos, como la pobreza multidimensional, la población registrada en el año 2024 y la proyección poblacional para el 2025. Este análisis busca ofrecer una visión integral de la inversión, permitiendo identificar tendencias y posibles impactos en el desarrollo regional y nacional. Se invita a los miembros de este equipo a revisar el contenido, formular observaciones y sugerencias, y aportar sus conocimientos y experiencias para enriquecer y fortalecer el análisis presentado, de manera que este sea una herramienta analítica que apoye la toma de decisiones estratégicas.
+En cuanto a la audiencia destinataria, este documento está orientado inicialmente al equipo técnico especializado de la Dirección de Planeamiento del MOP. El propósito es proporcionar una base estadística robusta respecto de la inversión proyectada para 2026, mediante la integración y análisis de diversas variables contenidas en la base de datos del ARI 2026, correlacionándolas con factores exógenos críticos tales como el índice de pobreza multidimensional, los datos demográficos oficiales registrados en 2024 (última información disponible publicada por el Instituto Nacional de Estadísticas, INE) y las proyecciones poblacionales disponibles para el año 2025.
+
+Se invita a los miembros de este equipo a revisar el contenido, formular observaciones y sugerencias, y aportar sus conocimientos y experiencias para enriquecer y fortalecer el análisis presentado, de manera que este sea una herramienta analítica que apoye la toma de decisiones estratégicas.
 </div>
 
 ## Metodología
@@ -1785,11 +1785,15 @@ tab_resumen_MAGALLANES %>%
 # Conclusión
 
 <div style="text-align: justify;">
-El análisis de las estadísticas de inversión, crecimiento poblacional y pobreza multidimensional en las distintas regiones de Chile para los años 2024 y 2025 revela importantes diferencias en las prioridades de desarrollo y necesidades de infraestructura. La Región Metropolitana lidera en inversión y población, lo que sugiere una relación directa entre la inversión y la atención a la pobreza en áreas densamente pobladas. Los Lagos recibe una inversión significativa, reflejando la importancia de la infraestructura en la región, mientras que Tarapacá muestra una disminución poblacional y recibe menos inversión, indicando una menor prioridad en los planes de desarrollo.
+El análisis estadístico de la inversión programada por los Servicios del Ministerio de Obras Públicas para el año 2026, basado en los datos del ARI 2026; y del crecimiento poblacional y pobreza multidimensional en las regiones de Chile; permite identificar con mayor precisión la distribución territorial de los recursos, los énfasis sectoriales y las brechas estructurales existentes. Esta información constituye un insumo clave para la planificación estratégica, ya que facilita la toma de decisiones orientadas a una inversión más equitativa, eficiente y alineada con los desafíos regionales del país.
+
+A partir del cruce de variables como población, pobreza multidimensional e inversión según el ARI 2026, se logra una mirada más integrada y contextual de la inversión. Esto permite visualizar zonas con mayores necesidades relativas y ajustar los esfuerzos públicos en función de criterios de cohesión territorial, impacto social y retorno estructural.
+
+La Región Metropolitana lidera en inversión y población, lo que sugiere una relación directa entre la inversión y la atención a la pobreza en áreas densamente pobladas. Los Lagos recibe una inversión significativa, reflejando la importancia de la infraestructura en la región, mientras que Tarapacá muestra una disminución poblacional y recibe menos inversión, indicando una menor prioridad en los planes de desarrollo.
 
 La distribución de la inversión se realiza considerando las necesidades específicas de cada región, tomando en cuenta factores como la población y la pobreza multidimensional. Los proyectos de arrastre predominan sobre los nuevos proyectos, con Los Lagos destacándose en el número de proyectos de arrastre. La Región Metropolitana lidera en nuevos proyectos, enfocándose en infraestructura urbana, transporte y servicios públicos para satisfacer las demandas de una población en crecimiento.
 
-En resumen, el informe destaca la importancia de una distribución estratégica de la inversión para abordar las necesidades de desarrollo regional y nacional, con un enfoque particular en las áreas con mayor población y pobreza. Este análisis proporciona una base sólida para la toma de decisiones estratégicas en el Ministerio de Obras Públicas, asegurando que los recursos se asignen de manera eficiente y efectiva para promover el desarrollo sostenible y mejorar la calidad de vida de los ciudadanos.
+Finalmente, este ejercicio estadístico refuerza el rol técnico de la Dirección de Planeamiento en la generación de conocimiento aplicado a la toma de decisiones. El documento no solo entrega un diagnóstico actualizado, sino que también propone una metodología replicable para próximos ciclos de planificación, fortaleciendo la trazabilidad y transparencia del proceso inversor del MOP a nivel nacional y regional.
 </div>
 
 # Bibliografía
