@@ -424,10 +424,10 @@ tab_resumen_AyP <- left_join(tab_poblacion_AyP, tab_monto_AyP, by = "Comunas")
 tab_resumen_AyP %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 4: Poblaciones en la región de Arica y Parinacota. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 4: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Arica y Parinacota. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -514,10 +514,10 @@ tab_resumen_TAR <- left_join(tab_poblacion_TAR, tab_monto_TAR, by = "Comunas")
 tab_resumen_TAR %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 6: Poblaciones en la región de TARAPACÁ. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 6: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Tarapacá. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -604,10 +604,10 @@ tab_resumen_ANT <- left_join(tab_poblacion_ANT, tab_monto_ANT, by = "Comunas")
 tab_resumen_ANT %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 8: Poblaciones en la región de Antofagasta. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 8: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Antofagasta. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -694,10 +694,10 @@ tab_resumen_ATA <- left_join(tab_poblacion_ATA, tab_monto_ATA, by = "Comunas")
 tab_resumen_ATA %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 10: Poblaciones en la región de Atacama. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 10: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Atacama. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -784,10 +784,10 @@ tab_resumen_COQ <- left_join(tab_poblacion_COQ, tab_monto_COQ, by = "Comunas")
 tab_resumen_COQ %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 12: Poblaciones en la región de COQUIMBO. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 12: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Coquimbo. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -874,10 +874,10 @@ tab_resumen_VAL <- left_join(tab_poblacion_VAL, tab_monto_VAL, by = "Comunas")
 tab_resumen_VAL %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 14: Poblaciones en la región de Valparaíso. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 14: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Valparaíso. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -964,10 +964,10 @@ tab_resumen_MET <- left_join(tab_poblacion_MET, tab_monto_MET, by = "Comunas")
 tab_resumen_MET %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 16: Poblaciones en la región de Metropolitana. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 16: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región Metropolitana. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1054,10 +1054,10 @@ tab_resumen_OHI <- left_join(tab_poblacion_OHI, tab_monto_OHI, by = "Comunas")
 tab_resumen_OHI %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 18: Poblaciones en la región de O'Higgins. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 18: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de O'Higgins. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1144,10 +1144,10 @@ tab_resumen_MAU <- left_join(tab_poblacion_MAU, tab_monto_MAU, by = "Comunas")
 tab_resumen_MAU %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 20: Poblaciones en la región de MAULE. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 20: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Maule. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1234,10 +1234,10 @@ tab_resumen_NUB <- left_join(tab_poblacion_NUB, tab_monto_NUB, by = "Comunas")
 tab_resumen_NUB %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 22: Poblaciones en la región de Ñuble. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 22: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Ñuble. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1324,10 +1324,10 @@ tab_resumen_BIO <- left_join(tab_poblacion_BIO, tab_monto_BIO, by = "Comunas")
 tab_resumen_BIO %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 24: Poblaciones en la región de BIOBÍO. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 24: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región del Biobío. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1414,10 +1414,10 @@ tab_resumen_LAARAU <- left_join(tab_poblacion_LAARAU, tab_monto_LAARAU, by = "Co
 tab_resumen_LAARAU %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 26: Poblaciones en la región de La Araucanía. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 26: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de La Araucanía. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1504,10 +1504,10 @@ tab_resumen_LOSRIOS <- left_join(tab_poblacion_LOSRIOS, tab_monto_LOSRIOS, by = 
 tab_resumen_LOSRIOS %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 28: Poblaciones en la región de Los Ríos. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 28: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Los Ríos. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1594,10 +1594,10 @@ tab_resumen_LOSLAGOS <- left_join(tab_poblacion_LOSLAGOS, tab_monto_LOSLAGOS, by
 tab_resumen_LOSLAGOS %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 30: Poblaciones en la región de LOS LAGOS. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 30: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Los Lagos. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1684,10 +1684,10 @@ tab_resumen_AYSÉN <- left_join(tab_poblacion_AYSEN, tab_monto_AYSEN, by = "Comu
 tab_resumen_AYSÉN %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 32: Poblaciones en la región de Aysén. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 32: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Aysén. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -1738,7 +1738,7 @@ otros_data_MAGALL <- BASE %>%
 
 kable(otros_data_MAGALL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de MAGALLANES. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Magallanes. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1774,10 +1774,10 @@ tab_resumen_MAGALLANES <- left_join(tab_poblacion_MAGALL, tab_monto_MAGALL, by =
 tab_resumen_MAGALLANES %>%
   mutate(`Población 2024` = scales::comma(`Población 2024`, big.mark = ".", decimal.mark = ","),
          `Población 2025` = scales::comma(`Población 2025`, big.mark = ".", decimal.mark = ","),
-         Monto2026 = ifelse(is.na(Monto2026), "Por definir", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
+         Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 34: Poblaciones en la región de Magallanes. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'Por definir' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 34: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Magallanes. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
          general_title = "", escape = FALSE)
 
 ```
