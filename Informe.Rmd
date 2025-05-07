@@ -83,11 +83,11 @@ INV_2025 <- c(224800207, 229983379, 432649438, 302199814, 304850445, 289180766, 
 ## Introducción
 
 <div style="text-align: justify;">
-El **Anteproyecto Regional de Inversiones** (ARI) 2026 constituye un instrumento anual de planificación regional que refleja las prioridades de las regiones en materia de inversión pública, abarcando nuevas etapas de estudios básicos y proyectos a ejecutar por las direcciones del Ministerio de Obras Públicas.
+El **Anteproyecto Regional de Inversiones** (ARI) 2026 constituye un instrumento anual de planificación regional que refleja las prioridades de las regiones en materia de inversión pública, abarcando nuevas etapas de estudios básicos y proyectos a ejecutar por las direcciones del Ministerio de Obras Públicas (MOP).
 
 La priorización se lleva a cabo de manera coordinada y sistemática con los gobiernos regionales y diversos actores públicos. Su propósito es contribuir al desarrollo de los territorios mediante el aumento y la mejora de la cobertura y calidad de los servicios de infraestructura para las comunidades.
 
-El presente documento constituye un análisis estadístico pormenorizado sobre los Servicios del Ministerio de Obras Públicas (MOP) para su ejecución durante el año 2025. El propósito central es realizar una caracterización detallada y una distribución territorial precisa de la inversión pública, empleando como fuente principal el último Anteproyecto Regional de Inversiones (ARI). Este análisis se propone como un instrumento esencial para robustecer el proceso de planificación estratégica del Ministerio.
+El presente documento constituye un análisis estadístico pormenorizado sobre los Servicios del MOP para su ejecución durante el año 2026. El propósito central es realizar una caracterización detallada y una distribución territorial precisa de la inversión pública, empleando como fuente principal el último ARI. Este análisis se propone como un instrumento esencial para robustecer el proceso de planificación estratégica del Ministerio.
 
 El informe se organiza en dos secciones metodológicamente diferenciadas: una sección con análisis agregado a nivel nacional y otra con análisis detallados para cada región del país. Ambas secciones integran tablas estadísticas y gráficos analíticos diseñados para facilitar la visualización e interpretación de las variables estudiadas, permitiendo así un examen exhaustivo de la distribución espacial y sectorial de la inversión.
 </div>
@@ -95,7 +95,7 @@ El informe se organiza en dos secciones metodológicamente diferenciadas: una se
 ## Está dirigido
 
 <div style="text-align: justify;">
-En cuanto a la audiencia destinataria, este documento está orientado inicialmente al equipo técnico especializado de la Dirección de Planeamiento del MOP. El propósito es proporcionar una base estadística robusta respecto de la inversión proyectada para 2026, mediante la integración y análisis de diversas variables contenidas en la base de datos del ARI 2026, correlacionándolas con factores exógenos críticos tales como el índice de pobreza multidimensional, los datos demográficos oficiales registrados en 2024 (última información disponible publicada por el Instituto Nacional de Estadísticas, INE) y las proyecciones poblacionales disponibles para el año 2025.
+En cuanto a la audiencia destinataria, este documento está orientado inicialmente al equipo técnico especializado de la Dirección de Planeamiento del MOP. El propósito es proporcionar una base estadística robusta respecto de la inversión proyectada para 2026, mediante la integración y análisis de diversas variables contenidas en la base de datos del ARI 2026, correlacionándolas con factores exógenos críticos tales como el índice de pobreza multidimensional dado por la Encuesta de Caracterización Socioeconómica Nacional (CASEN) 2022, los datos demográficos oficiales registrados en 2024 (última información disponible publicada por el Instituto Nacional de Estadísticas (INE)) y las proyecciones poblacionales disponibles para el año 2025 que también fueron extraídas del INE.
 
 Se invita a los miembros de este equipo a revisar el contenido, formular observaciones y sugerencias, y aportar sus conocimientos y experiencias para enriquecer y fortalecer el análisis presentado, de manera que este sea una herramienta analítica que apoye la toma de decisiones estratégicas.
 </div>
@@ -103,11 +103,11 @@ Se invita a los miembros de este equipo a revisar el contenido, formular observa
 ## Metodología
 
 <div style="text-align: justify;">
-Para obtener los resultados, estadísticas y gráficos, se utilizaron diversas fuentes de información, entre ellas la Planilla de Códigos Únicos Territoriales (CUT), las proyecciones de población para el año 2025, la población censal 2024, los datos de estimación de pobreza multidimensional 2022, y los registros del ARI 2025 y 2026. La integración de estas bases permitió realizar un análisis detallado de la distribución de población, condiciones socioeconómicas y presencia de inversiones del Ministerio de Obras Públicas (MOP) en distintas comunas del país para el año 2025.
+Para obtener los resultados, estadísticas y gráficos, se utilizaron diversas fuentes de información, entre ellas la Planilla de Códigos Únicos Territoriales (CUT) del año 2018 de la Subsecretaría de Desarrollo Regional y Administrativo (SUBDERE), las proyecciones de población para el año 2025 (INE), el CENSO 2024, los datos de estimación de pobreza multidimensional (CASEN 2022), y los registros del ARI 2025 y 2026. La integración de estas bases permitió realizar un análisis detallado de la distribución de población, condiciones socioeconómicas y presencia de inversiones del MOP en distintas comunas del país para el año 2025.
 
-Para la construcción de la base consolidada, en una primera etapa, se unieron los datos de cada región del país. Luego se agregaron las variables de proyecciones de población 2025, la población censal 2024 y los datos de pobreza multidimensional 2022, a través del código de unidad territorial de las comunas (SUBDERE, 2018).
+Para la construcción de la base consolidada, en una primera etapa, se unieron los datos de cada región del país. Luego se agregaron las variables de proyecciones de población 2025, la población censal 2024 y los datos de pobreza multidimensional 2022, a través del CUT de las comunas.
 
-Primero, con el fin de garantizar la consistencia y estandarización de los datos, se agrega variable que representa una abreviación para los servicios MOP. Para la construcción de los gráficos y la presentación de la información en formato HTML, se utilizó el software estadístico de código abierto Rstudio, junto a los paquetes especializados en manipulación y visualización de datos.Además, se filtra la base por aquellos proyectos que tienen monto asociado mayor que cero
+Primero, con el fin de garantizar la consistencia y estandarización de los datos, se agrega variable que representa una abreviación para los servicios MOP. Para la construcción de los gráficos y la presentación de la información en formato HTML, se utilizó el software estadístico de código abierto Rstudio, junto a los paquetes especializados en manipulación y visualización de datos. Además, se filtra la base por aquellos proyectos que tienen monto asociado mayor que cero.
 
 En cuanto a la fórmula de Crec/Decrec relativo de población de 2024 al 2025, se utiliza la siguiente expresión:
 
@@ -201,7 +201,7 @@ ggplot(tab1, aes(y = RegionAB, x = `Monto 2026`)) +
 ```
 
 <div style="text-align: justify;">
-La Región Metropolitana lidera en inversión, pobreza multidimensional y población. Esto sugiere una relación directa entre la cantidad de inversión y la necesidad de abordar la pobreza en áreas con alta densidad poblacional. La alta inversión puede estar destinada a mejorar la infraestructura y los servicios para una gran población, así como a reducir la pobreza multidimensional mediante proyectos específicos. Los Lagos recibe una inversión significativa de 433,052,650 pesos, lo que refleja la importancia de la infraestructura en esta región.
+La Región Metropolitana lidera en inversión (no es la que tiene mayor inversión, peroestá dentro de las regiones con inversiones más altas), pobreza multidimensional y población. Esto sugiere una relación directa entre la cantidad de inversión y la necesidad de abordar la pobreza en áreas con alta densidad poblacional. La alta inversión puede estar destinada a mejorar la infraestructura y los servicios para una gran población, así como a reducir la pobreza multidimensional mediante proyectos específicos. Los Lagos recibe una inversión significativa de más de 433 mil millones de pesos, lo que refleja la importancia de la infraestructura en esta región.
 
 Por el contrario, Tarapacá tiene una disminución significativa en la población y recibe menos inversión, lo que puede indicar una menor prioridad en los planes de desarrollo.
 
@@ -1477,7 +1477,7 @@ kable(otros_data_LOSRIOS, "html", col.names = c("Servicio", "Inversión", "Porce
 ```
 
 <div style="text-align: justify;">
-La región de Los Ríos muestra un crecimiento poblacional moderado en todas sus comunas, con Valdivia liderando en términos de población y crecimiento relativo.Valdivia recibe la mayor inversión, seguida por La Unión, lo que refleja su importancia regional y las necesidades de infraestructura. Panguipulli y Río Bueno reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas.Valdivia y La Unión tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
+La región de Los Ríos muestra un crecimiento poblacional moderado en todas sus comunas, con Valdivia liderando en términos de población y crecimiento relativo.Valdivia recibe la mayor inversión, seguida por La Unión, lo que refleja su importancia regional y las necesidades de infraestructura. Panguipulli y Río Bueno reciben menos inversión, lo que puede indicar una menor prioridad o necesidades específicas. Valdivia y La Unión tienen las mayores cifras de pobreza multidimensional, lo que sugiere que estas comunas necesitan más recursos para mejorar las condiciones de vida de sus habitantes.
 </div>
 
 ```{r, fig.cap = NULL}
