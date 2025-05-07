@@ -21,12 +21,12 @@ lang: es
 
 
 <div class="ARI 2026 MOP">
-  <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 100px; text-align: center;">Informe de Estadísticas ARI 2026 <br> Edición 2025 </div>
+  <div style="font-size: 2.5em; font-weight: bold; margin-bottom: 100px; text-align: center;">Informe de Estadísticas <br>ARI 2026</div>
   <div style="text-align: center;">
   <img src="mop.jpeg" alt="" width="30%">
 </div>
 <div style="font-size: 1.5em; color: black; margin-top: 100px; text-align: center;">
-  Unidad Gestión del Conocimiento y Tecnología
+  Edición 2025 <br>Unidad Gestión del Conocimiento y Tecnología
 </div>
 <div class="fecha" style="text-align: center;">
   Mayo 2025
@@ -201,11 +201,9 @@ ggplot(tab1, aes(y = RegionAB, x = `Monto 2026`)) +
 ```
 
 <div style="text-align: justify;">
-La Región Metropolitana lidera en inversión, pobreza multidimensional y población. Esto sugiere una relación directa entre la cantidad de inversión y la necesidad de abordar la pobreza en áreas con alta densidad poblacional. La alta inversión puede estar destinada a mejorar la infraestructura y los servicios para una gran población, así como a reducir la pobreza multidimensional mediante proyectos específicos.
+La Región Metropolitana lidera en inversión, pobreza multidimensional y población. Esto sugiere una relación directa entre la cantidad de inversión y la necesidad de abordar la pobreza en áreas con alta densidad poblacional. La alta inversión puede estar destinada a mejorar la infraestructura y los servicios para una gran población, así como a reducir la pobreza multidimensional mediante proyectos específicos. Los Lagos recibe una inversión significativa de 433,052,650 pesos, lo que refleja la importancia de la infraestructura en esta región.
 
-Los Lagos recibe una inversión significativa de 433,052,650 pesos, lo que refleja la importancia de la infraestructura en esta región.
-
-Tarapacá Tiene una disminución significativa en la población y recibe menos inversión, lo que puede indicar una menor prioridad en los planes de desarrollo.
+Por el contrario, Tarapacá tiene una disminución significativa en la población y recibe menos inversión, lo que puede indicar una menor prioridad en los planes de desarrollo.
 
 Estas observaciones muestran cómo la inversión se distribuye en función de las necesidades específicas de cada región, considerando factores como la población y la pobreza multidimensional.
 </div>
@@ -245,7 +243,7 @@ tab_resumen_nac %>% mutate(`Población 2024` = scales::comma(`Población 2024`, 
                            `Pobreza Multidimensional`  = replace_na(`Pobreza Multidimensional`, "12.472")) %>%
   kable("html", col.names = c("Región", "Población 2024", "Población 2025 (*)", "Crec/Decrec relativo de Población 2024 al 2025 (%)", "Pobreza Multidimensional (**)", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 1: Población, pobreza e inversión ARI 2026 en regiones de Chile. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los montos de inversión presentados están en miles de pesos y no incluyen la participación de las regiones en proyectos de carácter interregional.</span>", general_title = "", escape = FALSE) 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 1: Población, pobreza e inversión ARI 2026 en regiones de Chile. \nFuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. \n(*) Población proyectada al 2025 según el INE. \n(**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. \nNota: Los montos de inversión presentados están en miles de pesos y no incluyen la participación de las regiones en proyectos de carácter interregional.</span>", general_title = "", escape = FALSE) 
 
 ```
 
@@ -276,7 +274,7 @@ ggplot(tabREG_CAT, aes(x = RegionAB, y = TotalCat, fill = Categoría)) +
     }
     ) + 
   labs(
-    caption = "Figura 2 : Inversión desglosada por proyectos nuevos y de arrastre. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria \nNota: Inversión en miles de pesos",
+    caption = "Figura 2 : Inversión desglosada por proyectos nuevos y de arrastre \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria \nNota: Inversión en miles de pesos",
     title = "Inversión ARI 2026 por Región y Categoría del Proyecto (Arrastre y Nuevo)",
     x = "", y = "") +
   scale_fill_manual(values = alpha(c("cornsilk4", "darkblue"), .7)) +
@@ -316,9 +314,10 @@ ggplot(SERVICIOS_NAC , aes(x = reorder(SERVICIOS_A, -Monto2026), y = Monto2026, 
   geom_text(aes(label = paste0(scales::comma(Monto2026, big.mark = ".", decimal.mark = ","),
                                "\n(", format(Porcentaje, nsmall = 1, decimal.mark = ","), "%)")), 
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
-  labs(title = "Distribución de Inversión ARI 2026 por servicios MOP a nivel nacional",
-       x = "", y = "",
-       caption = "Figura 3: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP. Fuente: Elaboración propia a partir \nde los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' comprende los servicios DA, DGA, DP, SISS e INH.") +
+  labs(
+    caption = "Figura 3 : Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.",
+    title = "Inversión ARI 2026 por por servicios MOP a nivel nacional",
+    x = "", y = "") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_NAC$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -340,7 +339,7 @@ otros_data <- BASE %>%
 
 kable(otros_data, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 2: Servicios agrupados en 'Otros', los cuáles incluyen DA, DGA, DP, SISS e INH. Fuente: tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>",
+  footnote(general = "<span style='font-size: 12px;'>Tabla 2: Servicios agrupados en 'Otros', los cuáles incluyen DA, DGA, DP, SISS e INH. Fuente: tabla construida a partir de los datos del Departamento de Gestión Presupuestaria. Nota: Montos en miles de pesos.</span>",
            general_title = "", escape = FALSE)
 
 ```
@@ -369,7 +368,7 @@ ggplot(SERVICIOS_AYP, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Arica y Parinacota",
        x = "", y = "",
-       caption = "Figura 4: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Arica y Parinacota. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 4: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Arica y Parinacota. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_AYP$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -392,7 +391,7 @@ otros_data_AYP <- BASE %>%
 
 kable(otros_data_AYP, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 3: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Arica y Parinacota. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 3: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Arica y Parinacota. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -459,7 +458,7 @@ ggplot(SERVICIOS_TAR, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Tarapacá",
        x = "", y = "",
-       caption = "Figura 5: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Tarapacá. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 5: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Tarapacá. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_TAR$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -482,7 +481,7 @@ otros_data_TAR <- BASE %>%
 
 kable(otros_data_TAR, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 5: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Tarapacá. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 5: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Tarapacá. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -521,7 +520,7 @@ tab_resumen_TAR %>%
          Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 6: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Tarapacá. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 6: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Tarapacá. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -549,7 +548,7 @@ ggplot(SERVICIOS_ANT, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Antofagasta",
        x = "", y = "",
-       caption = "Figura 6: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Antofagasta. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 6: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Antofagasta. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_ANT$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -572,7 +571,7 @@ otros_data_ANT <- BASE %>%
 
 kable(otros_data_ANT, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 7: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Antofagasta. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 7: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Antofagasta. \nNota 2: Montos en miles de pesos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -611,7 +610,7 @@ tab_resumen_ANT %>%
          Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 8: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Antofagasta. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 8: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Antofagasta. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -639,7 +638,7 @@ ggplot(SERVICIOS_ATA, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Atacama",
        x = "", y = "",
-       caption = "Figura 7: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Atacama. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 7: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Atacama. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_ATA$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -662,7 +661,7 @@ otros_data_ATA <- BASE %>%
 
 kable(otros_data_ATA, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 9: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Atacama. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 9: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Atacama. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -701,7 +700,7 @@ tab_resumen_ATA %>%
          Monto2026 = ifelse(is.na(Monto2026), "S/I", scales::comma(Monto2026, big.mark = ".", decimal.mark = ","))) %>%
   kable("html", col.names = c("Comuna", "Población 2024", "Población 2025", "Crec/Decrec relativo (%) de Población 2024 al 2025", "Pobreza Multidimensional", "Inversión")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>%
-  footnote(general = "<span style='font-size: 12px;'>Tabla 10: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Atacama. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022. Nota: Los valores 'S/I' en la columna Inversión corresponden a comunas que forman parte de proyectos intercomunales pero que no tienen un monto asociado.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 10: Poblaciones, pobreza e inversión ARI 2026 (en miles de pesos) en la región de Atacama. Fuente: Elaboración propia basada en datos del INE, del Departamento de Gestión Presupuestaria y CASEN 2022. (*) Población proyectada al 2025 según el INE. (**) Indica la cantidad estimada de personas en situación de pobreza multidimensional para el año 2022.</span>", 
          general_title = "", escape = FALSE)
 
 ```
@@ -729,7 +728,7 @@ ggplot(SERVICIOS_COQ, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Coquimbo",
        x = "", y = "",
-       caption = "Figura 8: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Coquimbo. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 8: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Coquimbo. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_COQ$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -752,7 +751,7 @@ otros_data_COQ <- BASE %>%
 
 kable(otros_data_COQ, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 11: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de COQUIMBO. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 11: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Coquimbo. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -819,7 +818,7 @@ ggplot(SERVICIOS_VAL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Valparaíso",
        x = "", y = "",
-       caption = "Figura 9: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Valparaíso. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 9: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Valparaíso. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_VAL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -842,7 +841,7 @@ otros_data_VAL <- BASE %>%
 
 kable(otros_data_VAL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 13: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Valparaíso. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 13: Inversión ARI 2026 en miles de pesos por Servicios MOP. Nota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Valparaíso. Nota 2: Montos en miles de pesos. Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -909,7 +908,7 @@ ggplot(SERVICIOS_MET, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Metropolitana",
        x = "", y = "",
-       caption = "Figura 10: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Metropolitana. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 10: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Metropolitana. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_MET$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -932,7 +931,7 @@ otros_data_MET <- BASE %>%
 
 kable(otros_data_MET, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 15: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región Metropolitana. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 15: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región Metropolitana. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -999,7 +998,7 @@ ggplot(SERVICIOS_OHI, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de O'HIGGINS",
        x = "", y = "",
-       caption = "Figura 11: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de O'Higgins. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 11: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de O'Higgins. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_OHI$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1022,7 +1021,7 @@ otros_data_OHI <- BASE %>%
 
 kable(otros_data_OHI, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 17: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de O'Higgins. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 17: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de O'Higgins. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1089,7 +1088,7 @@ ggplot(SERVICIOS_MAU, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Maule",
        x = "", y = "",
-       caption = "Figura 12: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Maule. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 12: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Maule. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_MAU$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1112,7 +1111,7 @@ otros_data_MAU <- BASE %>%
 
 kable(otros_data_MAU, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 19: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de MAULE. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 19: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de MAULE. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1179,7 +1178,7 @@ ggplot(SERVICIOS_NUB, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Ñuble",
        x = "", y = "",
-       caption = "Figura 13: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Ñuble. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 13: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Ñuble. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_NUB$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1202,7 +1201,7 @@ otros_data_NUB <- BASE %>%
 
 kable(otros_data_NUB, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 21: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Ñuble. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 21: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Ñuble. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1269,7 +1268,7 @@ ggplot(SERVICIOS_BIO, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Biobío",
        x = "", y = "",
-       caption = "Figura 14: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Biobío. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 14: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Biobío. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_BIO$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1292,7 +1291,7 @@ otros_data_BIO <- BASE %>%
 
 kable(otros_data_BIO, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 23: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Biobío. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 23: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Biobío. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1359,7 +1358,7 @@ ggplot(SERVICIOS_LAARAU, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mont
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de La Araucanía",
        x = "", y = "",
-       caption = "Figura 15: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de La Araucanía. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 15: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de La Araucanía. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LAARAU$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1382,7 +1381,7 @@ otros_data_LAARAU <- BASE %>%
 
 kable(otros_data_LAARAU, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 25: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de La Araucanía. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 25: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de La Araucanía. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1449,7 +1448,7 @@ ggplot(SERVICIOS_LOSRIOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mon
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Ríos",
        x = "", y = "",
-       caption = "Figura 16: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Ríos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 16: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Ríos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LOSRIOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1472,7 +1471,7 @@ otros_data_LOSRIOS <- BASE %>%
 
 kable(otros_data_LOSRIOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 27: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Ríos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 27: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Ríos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1539,7 +1538,7 @@ ggplot(SERVICIOS_LOSLAGOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mo
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Lagos",
        x = "", y = "",
-       caption = "Figura 17: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Lagos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 17: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Lagos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LOSLAGOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1562,7 +1561,7 @@ otros_data_LOSLAGOS <- BASE %>%
 
 kable(otros_data_LOSLAGOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 29: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Lagos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 29: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Lagos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1629,7 +1628,7 @@ ggplot(SERVICIOS_AYSEN, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Aysén",
        x = "", y = "",
-       caption = "Figura 18: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Aysén. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 18: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Aysén. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_AYSEN$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1652,7 +1651,7 @@ otros_data_AYSEN <- BASE %>%
 
 kable(otros_data_AYSEN, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 31: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Aysén. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 31: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Aysén. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1719,7 +1718,7 @@ ggplot(SERVICIOS_MAGALL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mont
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Magallanes",
        x = "", y = "",
-       caption = "Figura 19: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Magallanes. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. Nota: La categoría 'Otros' \ncomprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 19: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Magallanes. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_MAGALL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1742,7 +1741,7 @@ otros_data_MAGALL <- BASE %>%
 
 kable(otros_data_MAGALL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP \n Nota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Magallanes. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Magallanes. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
