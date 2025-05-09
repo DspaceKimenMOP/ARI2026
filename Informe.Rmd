@@ -348,14 +348,14 @@ kable(otros_data, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%
 # Arica y Parinacota
 
 <div style="text-align: justify;">
-De acuerdo a la Figura 4, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+De acuerdo a la Figura 4, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Concesiones, de Aguas y de Aeropuertos sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_AYP <- BASE %>%
   filter(RegionAB == "ARICA Y PARINACOTA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DAP", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -368,7 +368,7 @@ ggplot(SERVICIOS_AYP, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Arica y Parinacota",
        x = "", y = "",
-       caption = "Figura 4: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Arica y Parinacota. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 4: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Arica y Parinacota. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DAP, DGA y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_AYP$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -384,14 +384,14 @@ otros_data_AYP <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DAP", "DGA","DGC")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_AYP, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 3: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Arica y Parinacota. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 3: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DAP, DGA y DGC para la región de Arica y Parinacota. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -438,7 +438,7 @@ tab_resumen_AyP %>%
 # Tarapacá
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas, de Arquitectura y General de Concesiones sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
@@ -528,14 +528,14 @@ tab_resumen_TAR %>%
 # Antofagasta
 
 <div style="text-align: justify;">
-En esta región, de acuerdo a la Figura 6, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+En esta región, de acuerdo a la Figura 6, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas de Arquitectura y de Obras Portuarias sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_ANT <- BASE %>%
   filter(RegionAB == "ANTOFAGASTA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA", "DOP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -548,7 +548,7 @@ ggplot(SERVICIOS_ANT, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Antofagasta",
        x = "", y = "",
-       caption = "Figura 6: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Antofagasta. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 6: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Antofagasta. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DOP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_ANT$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -564,14 +564,14 @@ otros_data_ANT <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DGA","DOP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_ANT, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 7: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Antofagasta. \nNota 2: Montos en miles de pesos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 7: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DOP para la región de Antofagasta. \nNota 2: Montos en miles de pesos. \n Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -618,14 +618,14 @@ tab_resumen_ANT %>%
 # Atacama
 
 <div style="text-align: justify;">
-Se aprecia en la Figura 7que La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+Se aprecia en la Figura 7que La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones de Obras Portuarias y en la Dirección de Arquitectura sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_ATA <- BASE %>%
   filter(RegionAB == "ATACAMA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DOP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -638,7 +638,7 @@ ggplot(SERVICIOS_ATA, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Atacama",
        x = "", y = "",
-       caption = "Figura 7: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Atacama. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 7: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Atacama. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA y DOP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_ATA$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -654,14 +654,14 @@ otros_data_ATA <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DOP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_ATA, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 9: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Atacama. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 9: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA y DOP para la región de Atacama. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -708,14 +708,14 @@ tab_resumen_ATA %>%
 # Coquimbo
 
 <div style="text-align: justify;">
-De acuerdo a la Figura 8, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+De acuerdo a la Figura 8, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones de Planeamiento, General de Aguas y de Arquitectura sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_COQ <- BASE %>%
   filter(RegionAB == "COQUIMBO") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -728,7 +728,7 @@ ggplot(SERVICIOS_COQ, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Coquimbo",
        x = "", y = "",
-       caption = "Figura 8: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Coquimbo. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 8: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Coquimbo. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_COQ$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -744,14 +744,14 @@ otros_data_COQ <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DGA","DP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_COQ, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 11: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Coquimbo. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 11: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DP para la región de Coquimbo. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -798,14 +798,14 @@ tab_resumen_COQ %>%
 # Valparaíso
 
 <div style="text-align: justify;">
-Según la Figura 9, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+Según la Figura 9, La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas y de Aeropuertos sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_VAL <- BASE %>%
   filter(RegionAB == "VALPARAÍSO") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DAP", "DGA") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -818,7 +818,7 @@ ggplot(SERVICIOS_VAL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Valparaíso",
        x = "", y = "",
-       caption = "Figura 9: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Valparaíso. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 9: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Valparaíso. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DAP y DGA.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_VAL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -834,14 +834,14 @@ otros_data_VAL <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DAP", "DGA")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_VAL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 13: Inversión ARI 2026 en miles de pesos por Servicios MOP. Nota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Valparaíso. Nota 2: Montos en miles de pesos. Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 13: Inversión ARI 2026 en miles de pesos por Servicios MOP. Nota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DAP, DGA para la región de Valparaíso. Nota 2: Montos en miles de pesos. Fuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -888,14 +888,14 @@ tab_resumen_VAL %>%
 # Metropolitana de Santiago
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección General de Concesiones y a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte y de tener infraestructuras para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección General de Concesiones y a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte y de tener infraestructuras para el desarrollo regional. La menor inversión en las Direcciones de Planeamiento y General de Aguas sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_MET <- BASE %>%
   filter(RegionAB == "METROPOLITANA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DP", "DGA") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -908,7 +908,7 @@ ggplot(SERVICIOS_MET, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Metropolitana",
        x = "", y = "",
-       caption = "Figura 10: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Metropolitana. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 10: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Metropolitana. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DP y DGA") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_MET$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -924,14 +924,14 @@ otros_data_MET <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DP", "DGA")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_MET, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 15: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región Metropolitana. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 15: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DP y DGA para la región Metropolitana. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -978,14 +978,14 @@ tab_resumen_MET %>%
 # Libertador General Bernardo O'Higgins
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones de Aeropuertos de Arquitectura, General de Aguas y de Obras portuarias sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_OHI <- BASE %>%
   filter(RegionAB == "O'HIGGINS") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DAP", "DA", "DGA", "DOP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -998,7 +998,7 @@ ggplot(SERVICIOS_OHI, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de O'HIGGINS",
        x = "", y = "",
-       caption = "Figura 11: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de O'Higgins. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 11: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de O'Higgins. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DAP, DA, DGA y DOP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_OHI$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1014,14 +1014,14 @@ otros_data_OHI <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DAP", "DA", "DGA", "DOP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_OHI, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 17: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de O'Higgins. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 17: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DAP, DA, DGA y DOP para la región de O'Higgins. \nNota 2: Montos en miles de pesos \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1068,7 +1068,7 @@ tab_resumen_OHI %>%
 # Maule
 
 <div style="text-align: justify;">
-Según la Figura 12 y Tabla 19, la mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja. La inversión en infraestructura vial es crucial para la conectividad y el desarrollo económico. La gestión de recursos hídricos también es importante, especialmente en regiones con desafíos relacionados con el agua.
+Según la Figura 12 y Tabla 19, la mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas, de Arquitectura y General de Concesiones sugiere que estos proyectos tienen una prioridad más baja. La inversión en infraestructura vial es crucial para la conectividad y el desarrollo económico. La gestión de recursos hídricos también es importante, especialmente en regiones con desafíos relacionados con el agua.
 </div>
 
 ```{r, fig.cap=NULL}
@@ -1158,14 +1158,14 @@ tab_resumen_MAU %>%
 # Ñuble
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Obras Civiles, lo que refleja la importancia de mejorar la infraestructura civil para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y la Dirección General de Aguas sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Obras Civiles, lo que refleja la importancia de mejorar la infraestructura civil para el desarrollo regional. La menor inversión en las Direcciones de Arquitectura y de Obras Portuarias sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_NUB<- BASE %>%
   filter(RegionAB == "ÑUBLE") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DOP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1178,7 +1178,7 @@ ggplot(SERVICIOS_NUB, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Ñuble",
        x = "", y = "",
-       caption = "Figura 13: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Ñuble. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 13: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Ñuble. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA y DOP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_NUB$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1194,7 +1194,7 @@ otros_data_NUB <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DOP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
@@ -1248,14 +1248,14 @@ tab_resumen_NUB %>%
 # Biobío
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas y de Aeropuertos sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_BIO<- BASE %>%
   filter(RegionAB == "BIOBÍO") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DGA", "DAP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1268,7 +1268,7 @@ ggplot(SERVICIOS_BIO, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto20
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Biobío",
        x = "", y = "",
-       caption = "Figura 14: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Biobío. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 14: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Biobío. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DGA y DAP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_BIO$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1284,14 +1284,14 @@ otros_data_BIO <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DGA", "DAP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_BIO, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 23: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Biobío. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 23: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DGA y DAP para la región de Biobío. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1338,14 +1338,14 @@ tab_resumen_BIO %>%
 # La Araucanía
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones de Obras Portuarias y General de Concesiones sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_LAARAU<- BASE %>%
   filter(RegionAB == "LA ARAUCANÍA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DOP","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1358,7 +1358,7 @@ ggplot(SERVICIOS_LAARAU, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mont
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de La Araucanía",
        x = "", y = "",
-       caption = "Figura 15: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de La Araucanía. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 15: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de La Araucanía. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DOP y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LAARAU$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1374,14 +1374,14 @@ otros_data_LAARAU <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DOP","DGC")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_LAARAU, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 25: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de La Araucanía. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 25: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DOP y DGC para la región de La Araucanía. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1428,14 +1428,14 @@ tab_resumen_LAARAU %>%
 # Los Ríos
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones de Obras Portuarias y General de Concesiones sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_LOSRIOS<- BASE %>%
   filter(RegionAB == "LA ARAUCANÍA") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DOP", "DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1448,7 +1448,7 @@ ggplot(SERVICIOS_LOSRIOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mon
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Ríos",
        x = "", y = "",
-       caption = "Figura 16: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Ríos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 16: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Ríos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DOP y DGC.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LOSRIOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1464,14 +1464,14 @@ otros_data_LOSRIOS <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DOP", "DGC")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_LOSRIOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 27: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Ríos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 27: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DOP y DGC para la región de Los Ríos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1518,14 +1518,14 @@ tab_resumen_LOSRIOS %>%
 # Los Lagos
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional, pues la mayoría de los proyectos son conservaciones y mejoramientos de caminos, redes viales, rutas y conexiones viales. La menor inversión en las Direcciones General de Aguas, de Arquitectura y de Obras Hidráulicas sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_LOSLAGOS<- BASE %>%
   filter(RegionAB == "LOS LAGOS") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA", "DOH") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1538,7 +1538,7 @@ ggplot(SERVICIOS_LOSLAGOS, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mo
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Los Lagos",
        x = "", y = "",
-       caption = "Figura 17: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Lagos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 17: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Los Lagos. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DOH.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_LOSLAGOS$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1554,14 +1554,14 @@ otros_data_LOSLAGOS <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DGA", "DOH")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_LOSLAGOS, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 29: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Los Lagos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 29: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DOH para la región de Los Lagos. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1608,14 +1608,14 @@ tab_resumen_LOSLAGOS %>%
 # Aysén del General Carlos Ibáñez del Campo
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas, de Planeamiento, de Arquitectura y de Obras Portuarias sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_AYSEN<- BASE %>%
   filter(RegionAB == "AYSÉN") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DGA","DP", "DA", "DOP") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1628,7 +1628,7 @@ ggplot(SERVICIOS_AYSEN, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Monto
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Aysén",
        x = "", y = "",
-       caption = "Figura 18: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Aysén. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 18: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Aysén. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DGA, DP, DA y DOP.") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_AYSEN$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1644,14 +1644,14 @@ otros_data_AYSEN <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DGA","DP", "DA", "DOP")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_AYSEN, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 31: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Aysén. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 31: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DGA, DP, DA y DOP para la región de Aysén. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
@@ -1698,14 +1698,14 @@ tab_resumen_AYSÉN %>%
 # Magallanes y de la Antártica Chilena
 
 <div style="text-align: justify;">
-La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en la Dirección de Arquitectura y otros servicios sugiere que estos proyectos tienen una prioridad más baja.
+La mayor parte de la inversión se destina a la Dirección de Vialidad, lo que refleja la importancia de mejorar las vías de transporte para el desarrollo regional. La menor inversión en las Direcciones General de Aguas y de Arquitectura sugiere que estos proyectos tienen una prioridad más baja.
 </div>
 
 ```{r, fig.cap=NULL}
 
 SERVICIOS_MAGALL<- BASE %>%
   filter(RegionAB == "MAGALLANES") %>%
-  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA","DGC") ~ "OTROS", TRUE ~ Servicio)) %>%
+  mutate(ServicioAgrupado = case_when(Servicio %in% c("DA", "DGA") ~ "OTROS", TRUE ~ Servicio)) %>%
   group_by(ServicioAgrupado) %>%
   summarise(Monto2026 = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = round(Monto2026 / sum(Monto2026) * 100, 2))
@@ -1718,7 +1718,7 @@ ggplot(SERVICIOS_MAGALL, aes(x = reorder(ServicioAgrupado, -Monto2026), y = Mont
             vjust = -0.5, size = 3, color = "black", fontface = "bold",) +
   labs(title = "Inversión ARI 2026 por servicios MOP en Región de Magallanes",
        x = "", y = "",
-       caption = "Figura 19: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Magallanes. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA, DGA y DGC.") +
+       caption = "Figura 19: Inversión ARI 2026 en miles de pesos para los servicios asociados al MOP para la región de Magallanes. \nFuente: Elaboración propia a partir de los datos del Departamento de Gestión Presupuestaria. \nNota: La categoría 'Otros' comprende los servicios DA y DGA") +
   scale_fill_manual(values = colores_servicios) +
   scale_y_continuous(limits = c(0, max(SERVICIOS_MAGALL$Monto2026) * 1.1), labels = label_number(scale = 1e-6, suffix = "M")) +
   theme_minimal() +
@@ -1734,14 +1734,14 @@ otros_data_MAGALL <- BASE %>%
   group_by(Servicio) %>%
   summarise(Monto = sum(`Monto 2026`, na.rm = TRUE)) %>%
   mutate(Porcentaje = Monto / sum(Monto) * 100) %>% 
-  filter(Servicio %in% c("DA", "DGA","DGC")) %>%
+  filter(Servicio %in% c("DA", "DGA")) %>%
   mutate(Monto = scales::comma(Monto, big.mark = ".", decimal.mark = ","),
          Porcentaje = scales::comma(round(Porcentaje, 2), big.mark = ".", decimal.mark = ","))
 
 
 kable(otros_data_MAGALL, "html", col.names = c("Servicio", "Inversión", "Porcentaje (%)")) %>%
   kable_styling(full_width = FALSE, bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
-  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA, DGA y DGC para la región de Magallanes. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
+  footnote(general = "<span style='font-size: 12px;'>Tabla 33: Inversión ARI 2026 en miles de pesos por Servicios MOP. \nNota 1: Servicios MOP agrupados en ‘Otros’, los cuales incluyen DA y DGA para la región de Magallanes. \nNota 2: Montos en miles de pesos. \nFuente: Tabla construida a partir de los datos del Departamento de Gestión Presupuestaria.</span>", 
            general_title = "", escape = FALSE)
 
 ```
