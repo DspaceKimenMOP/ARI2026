@@ -1804,9 +1804,9 @@ Finalmente, este ejercicio estadístico refuerza el rol técnico de la Direcció
 <div style="text-align: justify;">
 "Anteproyecto Regional de Inversiones - ARI MOP 2026". Departamento de Gestión Presupuestaria. Dirección de Planeamiento. Ministerio de Obras Públicas. Abril, 2025.
 
-"Estimaciones de Índice de Pobreza Multidimensional por comuna. Aplicación de Metodologías de Estimación para Áreas Pequeñas". CASEN 2022. MIDESO.
+"Estimaciones de Índice de Pobreza Multidimensional por comuna. Aplicación de Metodologías de Estimación para Áreas Pequeñas". MIDESO. Julio, 2023.
 
-"Estimaciones y proyecciones 2002-2035 por comunas". INE.
+"Estimaciones y proyecciones 2002-2035 por comunas". INE. Diciembre, 2018.
 
 "Población censada por sexo y razón hombre-mujer, según grupos de edad quinquenal y comuna". CENSO 2024. INE. 27 de marzo, 2025.
 </div>
